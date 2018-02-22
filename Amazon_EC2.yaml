@@ -1,0 +1,90 @@
+info:
+  description: Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
+    secure, resizable compute capacity in the cloud. It is designed to make web-scale
+    cloud computing easier for developers.
+  termsOfService: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/Welcome.html
+  title: Amazon_EC2_API
+  version: '1.0'
+openapi: 3.0.0
+security:
+  - Amazon_EC2_Key: []
+servers:
+- description: Amazon  EC2
+  url: https://ec2.amazonaws.com
+components:
+  responses:
+    '404':
+      description: not found
+  securitySchemes:
+    Amazon_EC2Key:
+      description: Amazon EC2 key
+      in: header
+      name: Amazon EC2
+      type: apiKey
+paths:
+  /?Action=CreateLaunchTemplate&LaunchTemplateName={launchTemplateName}:
+    post:
+      description: Creates a launch template. A launch template contains the parameters
+        to launch an instance. When you launch an instance using RunInstances, you
+        can specify a launch template instead of providing the launch parameters in
+        the request.
+      parameters:
+      - description: A name for the launch template.
+        in: path
+        name: launchTemplateName
+        required: true
+        schema:
+          type: string
+      responses:
+        '404':
+          $ref: '#/components/responses/404'
+      servers:
+      - url: https://ec2.amazonaws.com
+      summary: Creates a launch template.
+      tags:
+      - create_instance
+  /?Action=RunInstances:
+    post:
+      description: Launches the specified number of instances using an AMI for which
+        you have permissions.
+      parameters:
+      - description: The launch template to use.
+        in: query
+        name: launchTemplateSpecification
+        required: true
+        schema:
+          properties:
+            launchTemplateId:
+              type: string
+            version:
+              type: string
+          required:
+          - launchTemplateId
+          - version
+          type: object
+      responses:
+        '404':
+          $ref: '#/components/responses/404'
+      servers:
+      - url: https://ec2.amazonaws.com
+      summary: launch instances
+      tags:
+      - launch_instance
+  /?Action=StopInstances &InstanceId={instanceId}:
+    post:
+      description: Stops an Amazon EBS-backed instance.
+      parameters:
+      - description: instance Id
+        in: path
+        name: instanceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '404':
+          $ref: '#/components/responses/404'
+      servers:
+      - url: https://ec2.amazonaws.com
+      summary: Stops an instance.
+      tags:
+      - stop_instance

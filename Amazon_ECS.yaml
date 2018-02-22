@@ -1,0 +1,70 @@
+info:
+  description: Amazon Elastic Container Service (Amazon ECS) is a highly scalable, high-performance container orchestration service that supports Docker containers and allows you to easily run and scale containerized applications on AWS.
+  termsOfService: https://docs.aws.amazon.com/AmazonECS/latest/APIReference/Welcome.html
+  title: Amazon_ECS_API
+  version: '1.0'
+openapi: 3.0.0
+security:
+  - Amazon_ECS_Key: []
+servers:
+- description: Amazon  ECS US
+  url: https://ecs.us-east-1.amazonaws.com
+components:
+  responses:
+    '404':
+      description: not found
+  securitySchemes:
+    Amazon_ECSKey:
+      description: Amazon ECS key
+      in: header
+      name: AuthKey
+      type: apiKey
+paths:
+  /AmazonEC2ContainerService/CreateCluster:
+    post:
+      description: Creates a new Amazon ECS cluster. By default, your account receives
+        a default cluster when you launch your first container instance. However,
+        you can create your own cluster with a unique name with the CreateCluster
+        action.
+      parameters:
+      - description: The name of your cluster. If you do not specify a name for your
+          cluster, you create a cluster named default. Up to 255 letters (uppercase
+          and lowercase), numbers, hyphens, and underscores are allowed.
+        in: query
+        name: clusterName
+        required: false
+        schema:
+          type: string
+      responses:
+        '404':
+          $ref: '#/components/responses/404'
+        '200':
+          description: ok
+      servers:
+      - url: https://ecs.us-east-1.amazonaws.com
+      summary: Creates a new Amazon ECS cluster.
+      tags:
+      - create_cluster
+      
+  /AmazonEC2ContainerServiceV20141113/DeleteCluster:
+    post:
+      description: Deletes the specified cluster. You must deregister all container
+        instances from this cluster before you may delete it. You can list the container
+        instances in a cluster with ListContainerInstances and deregister them with
+        DeregisterContainerInstance.
+      parameters:
+      - description: The short name or full Amazon Resource Name (ARN) of the cluster
+          to delete.
+        in: query
+        name: cluster
+        required: true
+        schema:
+          type: string
+      responses:
+        '404':
+          $ref: '#/components/responses/404'
+      servers:
+      - url: https://ecs.us-east-1.amazonaws.com
+      summary: Deletes the specified cluster.
+      tags:
+      - delete_cluster
