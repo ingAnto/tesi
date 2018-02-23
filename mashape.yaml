@@ -1,0 +1,140 @@
+openapi:  "3.0.0"
+
+info:
+  title: Weather API from Mashape
+  description: "This is a sample spec that describes a Mashape Weather API as an example to demonstrate features in the Swagger-2.0 specification. This output is part of the <a href=\"http://idratherbewriting.com/learnapidoc\">Documenting REST API course</a> on my site. The Weather API displays forecast data by latitude and longitude. It's a simple weather API, but the data comes from Yahoo Weather Service. The weatherdata endpoint delivers the most robust package of information of the endpoints here. Explore the API, you'll need an API key. You can sign up for an API through Mashape, or you can just use this one: \n EF3g83pKnzmshgoksF83V6JB6QyTp1cGrrdjsnczTkkYgYrp8p. For the latitude and longitude parameters, you can get this information from the URL of a location on Google Maps."
+  version: "1.0"
+  termsOfService: https://konghq.com/terms/
+  contact:
+    name: fyhao
+    url: https://market.mashape.com/fyhao
+    email: some_email@gmail.com
+  license:
+    name: Limited license
+    url: https://konghq.com/terms/
+servers:
+  - url: https://simple-weather.p.mashape.com
+    description: Production server
+  - url: https://beta.simple-weather.p.mashape.com
+    description: Beta server
+    variables:
+      username:
+        default: demo
+      port:
+        enum:
+          - '8443'
+          - '443'
+        default: '8443'
+  - url: https://some-other.simple-weather.p.mashape.com
+    description: Some other server
+
+components:
+  parameters:
+    latParam:
+      name: lat
+      in: query
+      description: "Latitude coordinates."
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: string
+      example: "37.3708698"
+    lngParam:
+      name: lng
+      in: query
+      description: "Longitude coordinates."
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: string
+      example: "-122.037593"
+
+  responses:
+    404:
+      description: Not found
+      content:
+        text/plain:
+          schema:
+            type: string
+            description: Not found
+            example: Not found
+    
+paths:
+
+  /aqi:
+    
+    get:
+      tags:
+      - Air Quality
+      summary: getAqi
+      description: Gets the air quality index
+      operationId: GetAqi
+      externalDocs:
+        description: More details
+        url: "https://market.mashape.com/fyhao/weather-13#aqi"
+      parameters:
+            - $ref: '#/components/parameters/latParam'
+            - $ref: '#/components/parameters/lngParam'
+      responses:
+        200:
+          description: AQI response
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: AQI response
+                example: 52
+        404:
+          $ref: '#/components/responses/404'
+        
+  /weather:
+    get:
+      servers:
+      - url: https://simple-weather.p.mashape.com
+      tags:
+      - Weather Forecast
+      summary: getWeather
+      description: Gets the weather forecast in abbreviated form
+      operationId: GetWeather
+      externalDocs:
+        description: More details
+        url: "https://market.mashape.com/fyhao/weather-13#weather"
+      parameters:
+            - $ref: '#/components/parameters/latParam'
+            - $ref: '#/components/parameters/lngParam'
+      responses:
+        200:
+          description: weather response
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: weather response
+                example: 26 c, Mostly Clear at Singapore, Singapore
+        404:
+          $ref: '#/components/responses/404'
+
+  /weatherdata:
+    get:
+      tags:
+        - Weather Forecast
+      summary: getWeatherData
+      description: Get weather forecast with lots of details
+      operationId: GetWeatherData
+      externalDocs:
+        description: More details
+        url: "https://market.mashape.com/fyhao/weather-13#weatherdata"
+      parameters:
+            - $ref: '#/components/parameters/latParam'
+            - $ref: '#/components/parameters/lngParam'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                description: Successful operation
+        404:
+          $ref: '#/components/responses/404'

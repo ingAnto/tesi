@@ -1,0 +1,196 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: OpenWeatherMap
+  description: >
+    We are an IT company with practical experience in Big Data and geospatial
+    technologies.
+
+
+    Our mission is to provide a global geospatial platform which is affordable
+    to users and enables them to operate effortlessly with Earth Observation
+    data like satellite imagery, weather data, and similar data sources. With
+    our platform you can easily build new data-driven products for agriculture,
+    logistics, retail, transportation, and many others.
+
+
+    Our business model is simple and affordable for everybody - from individuals
+    who are seeking to start a new business to large enterprises and tech
+    giants. We have free products for easy start, and several paid subscriptions
+    depending on volume of provided data.
+
+
+    We have weather history and forecasts, open source and commercial satellite
+    imagery, and other Earth Observation data that are available through unified
+    APIs provided by our high-performance platform. We are continuously
+    expanding our product portfolio by adding new data feeds and tools.
+
+
+    We use cutting-edge technologies for collecting, processing and distributing
+    data to keep the unprecedentedly high volume of operations. VANE platform
+    processes petabytes of data online and serves billions of API calls per day
+    keeping reasonable prices at the same time.
+schemes:
+  - http
+host: samples.openweathermap.org
+basePath: /data/2.5
+paths:
+  /weather:
+    get:
+      parameters:
+        - name: q
+          in: query
+          type: string
+          description: >-
+            city name and country code divided by comma, use ISO 3166 country
+            codes
+        - name: lat
+          in: query
+          type: string
+          description: lat coordinates of the location of your interest
+        - name: lon
+          in: query
+          type: string
+        - name: zip
+          in: query
+          type: string
+          description: lon coordinates of the location of your interest
+        - name: appid
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              coord:
+                type: object
+                properties:
+                  lon:
+                    description: 'City geo location, longitude'
+                    type: number
+                  lat:
+                    description: 'City geo location, latitude'
+                    type: number
+              sys:
+                type: object
+                properties:
+                  type:
+                    description: Internal parameter
+                    type: string
+                  id:
+                    description: Internal parameter
+                    type: string
+                  message:
+                    description: Internal parameter
+                    type: string
+                  country:
+                    description: 'Country code (GB, JP etc.)'
+                    type: string
+                  sunrise:
+                    description: 'Sunrise time, unix, UTC'
+                    type: integer
+                  sunset:
+                    description: 'Sunset time, unix, UTC'
+                    type: integer
+              weather:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      description: Weather condition id
+                      type: integer
+                    main:
+                      description: 'Group of weather parameters (Rain, Snow, Extreme etc.)'
+                      type: string
+                    description:
+                      description: Weather condition within the group
+                      type: string
+                    icon:
+                      description: Weather icon id
+                      type: string
+              base:
+                description: Internal parameter
+                type: string
+              main:
+                type: object
+                properties:
+                  temp:
+                    description: >-
+                      Temperature. Unit Default Kelvin, Metric Celsius, Imperial
+                      Fahrenheit.
+                    type: number
+                  humidity:
+                    description: 'Humidity, %'
+                    type: number
+                  pressure:
+                    description: >-
+                      Atmospheric pressure (on the sea level, if there is no
+                      sea_level or grnd_level data), hPa
+                    type: number
+                  temp_min:
+                    description: >-
+                      Minimum temperature at the moment. This is deviation from
+                      current temp that is possible for large cities and
+                      megalopolises geographically expanded (use these parameter
+                      optionally). Unit Default Kelvin, Metric Celsius, Imperial
+                      Fahrenheit.
+                    type: number
+                  temp_max:
+                    description: >-
+                      Maximum temperature at the moment. This is deviation from
+                      current temp that is possible for large cities and
+                      megalopolises geographically expanded (use these parameter
+                      optionally). Unit Default Kelvin, Metric Celsius, Imperial
+                      Fahrenheit.
+                    type: number
+                  sea_level:
+                    description: 'Atmospheric pressure on the sea level, hPa'
+                    type: number
+                  grnd_level:
+                    description: 'Atmospheric pressure on the ground level, hPa'
+                    type: number
+              wind:
+                type: object
+                properties:
+                  speed:
+                    description: >-
+                      Wind speed. Unit Default meter/sec, Metric meter/sec,
+                      Imperial miles/hour.
+                    type: number
+                  deg:
+                    description: 'Wind direction, degrees (meteorological)'
+                    type: number
+              rain:
+                type: object
+                properties:
+                  3h:
+                    description: Rain volume for the last 3 hours
+                    type: number
+              snow:
+                type: object
+                properties:
+                  3h:
+                    description: Snow volume for the last 3 hours
+                    type: number
+              clouds:
+                type: object
+                properties:
+                  all:
+                    description: 'Cloudiness, %'
+                    type: number
+              dt:
+                description: 'Time of data calculation, unix, UTC'
+                type: number
+              id:
+                description: City ID
+                type: number
+              name:
+                description: City name
+                type: string
+              cod:
+                description: Internal parameter
+                type: number
